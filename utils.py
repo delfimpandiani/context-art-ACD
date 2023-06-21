@@ -7,12 +7,17 @@ def save_obj(obj, filename):
     f = open(filename, 'wb')
     pickle.dump(obj, f)
     f.close()
-    print "Saved object to %s." % filename
+    print("Saved object to %s." % filename)
 
 
 def load_obj(filename):
     f = open(filename, 'rb')
-    obj = pickle.load(f)
+    # obj = pickle.load(f, encoding='utf-8')
+    try:
+        obj = pickle.load(f, encoding='utf-8')
+    except UnicodeDecodeError:
+        f.seek(0)
+        obj = pickle.load(f, encoding='latin1')
     f.close()
     return obj
 
